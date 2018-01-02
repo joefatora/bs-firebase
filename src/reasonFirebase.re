@@ -137,13 +137,29 @@ module Auth = {
   module AuthCredential = {
     type t;
   };
+  module AdditionalUserInfo = {
+    type t;
+  };
+  module UserCredential = {
+    type t;
+    [@bs.get] external user: t => Js.nullable(User.t) = "user";
+    [@bs.get] external credential: t => Js.nullable(AuthCredential.t) = "credential";
+    [@bs.get] external operationType: t => Js.nullable(string) = "operationType";
+    [@bs.get] external additionalUserInfo: t => Js.nullable(AdditionalUserInfo.t) = "additionalUserInfo";
+  };
   [@bs.get] external currentUser : t => Js.null(User.t) = "currentUser";
   [@bs.send]
-    external createUserWithEmailAndPassword : (
+    external createUserAndRetrieveDataWithEmailAndPassword: (
     t,
     ~email:string,
     ~password:string
-  ) => Js.Promise.t(User.t) = "createUserWithEmailAndPassword";
+  ) => Js.Promise.t(UserCredential.t) = "createUserWithEmailAndPassword";
+  [@bs.send]
+    external signInAndRetrieveDataWithEmailAndPassword: (
+    t,
+    ~email:string,
+    ~password:string
+  ) => Js.Promise.t(UserCredential.t) = "signInAndRetrieveDataWithEmailAndPassword";
   [@bs.send]
   external onAuthStateChanged :
     (
