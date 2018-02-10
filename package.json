@@ -11,12 +11,10 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "bs-platform": "^2.0.0"
+    "bs-platform": "^2.1.0"
   },
   "dependencies": {
-    "bs-platform": "^2.1.0",
-    "firebase": "^4.4.0",
-    "global": "^4.3.2"
+    "firebase": "^4.4.0"
   },
   "repository": "git@github.com:viskahq/bs-firebase.git",
   "author": ""
