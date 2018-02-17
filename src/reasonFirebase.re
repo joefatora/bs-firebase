@@ -113,6 +113,70 @@ module Database = {
   external refFromUrl : (t, ~url: string) => Reference.t = "refFromURL";
 };
 
+module Firestore = {
+  type t;
+  module DocumentSnapshot = {
+    type t;
+    [@bs.send] external data : t => Js.Json.t = "";
+  };
+  module Query = {
+    type t;
+  };
+  module QuerySnapshot = {
+    type t;
+  };
+  module Error = {
+    type t;
+  };
+  type unsubscribeFunction = unit => unit;
+  module DocumentReference = {
+    type t;
+    type setOptions = {. "merge": bool};
+    [@bs.send] external delete : t => Js.Promise.t(unit) = "";
+    [@bs.send] external get : t => Js.Promise.t(DocumentSnapshot.t) = "";
+    [@bs.send]
+    external onSnapshot :
+      (
+        t,
+        {. "includeMetadataChanges": Js.boolean},
+        DocumentSnapshot.t => unit,
+        Error.t => unit
+      ) =>
+      unsubscribeFunction =
+      "";
+    [@bs.send]
+    external set : (t, Js.t('a), setOptions) => Js.Promise.t(unit) = "";
+    [@bs.send] external update : (t, Js.t('a)) => Js.Promise.t(unit) = "";
+  };
+  module CollectionReference = {
+    type t;
+    [@bs.send] external doc : (t, string) => DocumentReference.t = "";
+    [@bs.send]
+    external add : (t, Js.t('a)) => Js.Promise.t(DocumentReference.t) = "";
+    [@bs.send] external endAt : (t, 'a) => Query.t = "";
+    [@bs.send] external endBefore : (t, 'a) => Query.t = "";
+    [@bs.send] external get : t => Js.Promise.t(QuerySnapshot.t) = "";
+    [@bs.send] external isEqual : t => Js.boolean = "";
+    [@bs.send] external limit : (t, int) => Query.t = "";
+    [@bs.send]
+    external onSnapshot :
+      (
+        t,
+        {. "includeMetadataChanges": Js.boolean},
+        QuerySnapshot.t => unit,
+        Error.t => unit
+      ) =>
+      unsubscribeFunction =
+      "";
+    [@bs.send]
+    external orderBy : (t, string, ~direction: string=?, unit) => Query.t = "";
+    [@bs.send] external startAfter : (t, 'a) => Query.t = "";
+    [@bs.send] external startAt : (t, 'a) => Query.t = "";
+    [@bs.send] external where : (t, string, string, 'a) => Query.t = "";
+  };
+  [@bs.send] external collection : (t, string) => CollectionReference.t = "";
+};
+
 module Storage = {
   type t;
   module UploadTask = {
@@ -228,9 +292,18 @@ type options = {
   "authDomain": string,
   "databaseURL": string,
   "storageBucket": string,
-  "messagingSenderId": string
+  "messagingSenderId": string,
+  "projectId": string
 };
 
 [@bs.module "firebase"]
 external initializeApp : (~options: options) => App.t = "initializeApp";
 
+/* This is to get around a compiler optimization that will inline this import statement into the caller, instead of leaving it in this file. But because of the way the firebase imports work we want to import firebase and firebase/firestore into the same file;
+ */
+let initializeApp = initializeApp;
+
+[@bs.module] external firebaseFirestore : unit = "firebase/firestore";
+
+/* This is to get around a compiler optimization that will remove this module declaration because it isn't used. But the firebase API just needs this to be required in the file, not used. */
+let firebaseFirestore = firebaseFirestore;

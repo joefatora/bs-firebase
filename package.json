@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "bs-platform": "^2.1.0",
-    "firebase": "^4.4.0",
+    "firebase": "^4.9.0",
     "global": "^4.3.2"
   },
   "repository": "git@github.com:viskahq/bs-firebase.git",
