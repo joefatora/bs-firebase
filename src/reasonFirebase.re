@@ -12,7 +12,12 @@ module Database = {
     [@bs.send] external child : (t, ~path: string) => t = "";
     [@bs.send]
     external once :
-      (t, ~eventType: string, ~successCallback: DataSnapshot.t => unit=?, unit) =>
+      (
+        t,
+        ~eventType: string,
+        ~successCallback: DataSnapshot.t => unit=?,
+        unit
+      ) =>
       Js.Promise.t(DataSnapshot.t) =
       "";
     type cb = DataSnapshot.t => unit;
@@ -28,18 +33,29 @@ module Database = {
       cb =
       "";
     [@bs.send]
-    external off : (t, ~eventType: string, ~callback: DataSnapshot.t => unit=?, unit) => unit =
+    external off :
+      (t, ~eventType: string, ~callback: DataSnapshot.t => unit=?, unit) =>
+      unit =
       "";
     [@bs.send]
     external set :
-      (t, ~value: 'a, ~onComplete: Js.nullable(Error.t('e)) => unit=?, unit) => Js.Promise.t(unit) =
+      (t, ~value: 'a, ~onComplete: Js.nullable(Error.t('e)) => unit=?, unit) =>
+      Js.Promise.t(unit) =
       "";
     [@bs.send]
     external update :
-      (t, ~value: 'a, ~onComplete: Js.nullable(Error.t('e)) => unit=?, unit) => Js.Promise.t(unit) =
+      (t, ~value: 'a, ~onComplete: Js.nullable(Error.t('e)) => unit=?, unit) =>
+      Js.Promise.t(unit) =
       "";
     [@bs.send]
-    external push : (t, ~value: 'a=?, ~onComplete: Js.nullable(Error.t('e)) => unit=?, unit) => t =
+    external push :
+      (
+        t,
+        ~value: 'a=?,
+        ~onComplete: Js.nullable(Error.t('e)) => unit=?,
+        unit
+      ) =>
+      t =
       "";
   } = Reference
   and DataSnapshot: {
@@ -60,19 +76,25 @@ module Database = {
   module OnDisconnect = {
     type t;
     [@bs.send]
-    external cancel : (t, ~onComplete: Js.nullable(Error.t('e)) => unit=?) => Js.Promise.t(unit) =
+    external cancel :
+      (t, ~onComplete: Js.nullable(Error.t('e)) => unit=?) =>
+      Js.Promise.t(unit) =
       "";
     [@bs.send]
-    external remove : (t, ~onComplete: Js.nullable(Error.t('e)) => unit=?) => Js.Promise.t(unit) =
+    external remove :
+      (t, ~onComplete: Js.nullable(Error.t('e)) => unit=?) =>
+      Js.Promise.t(unit) =
       "";
     [@bs.send]
     external set :
-      (t, Js.Json.t, ~onComplete: Js.nullable(Error.t('e)) => unit=?) => Js.Promise.t(unit) =
+      (t, Js.Json.t, ~onComplete: Js.nullable(Error.t('e)) => unit=?) =>
+      Js.Promise.t(unit) =
       "";
     /*external setWithPriority*/
     [@bs.send]
     external update :
-      (t, Js.Json.t, ~onComplete: Js.nullable(Error.t('e)) => unit=?) => Js.Promise.t(unit) =
+      (t, Js.Json.t, ~onComplete: Js.nullable(Error.t('e)) => unit=?) =>
+      Js.Promise.t(unit) =
       "";
   };
   module ThenableReference = {
@@ -86,9 +108,9 @@ module Database = {
   [@bs.send] external goOnline : t => unit = "goOnline";
   [@bs.send] external ref : (t, ~path: string=?, unit) => Reference.t = "";
   [@bs.scope ("database", "ServerValue")] [@bs.val] [@bs.module "firebase"]
-  external serverTimestamp : Js.null(string) =
-    "TIMESTAMP";
-  [@bs.send] external refFromUrl : (t, ~url: string) => Reference.t = "refFromURL";
+  external serverTimestamp : Js.null(string) = "TIMESTAMP";
+  [@bs.send]
+  external refFromUrl : (t, ~url: string) => Reference.t = "refFromURL";
 };
 
 module Storage = {
@@ -119,7 +141,11 @@ module Auth = {
   type t;
   module User = {
     type t;
-    type profile = {. "displayName": Js.nullable(string), "photoURL": Js.nullable(string)};
+    type profile = {
+      .
+      "displayName": Js.nullable(string),
+      "photoURL": Js.nullable(string)
+    };
     [@bs.get] external displayName : t => string = "displayName";
     [@bs.get] external email : t => Js.nullable(string) = "email";
     [@bs.get] external emailVerified : t => bool = "emailVerified";
@@ -127,9 +153,11 @@ module Auth = {
     [@bs.get] external phoneNumber : t => Js.nullable(string) = "phoneNumber";
     [@bs.get] external photoUrl : t => Js.nullable(string) = "photoURL";
     [@bs.get] external uid : t => string = "uid";
-    [@bs.send] external updateProfile : (t, ~profile: profile) => Js.Promise.t(unit) =
+    [@bs.send]
+    external updateProfile : (t, ~profile: profile) => Js.Promise.t(unit) =
       "updateProfile";
-    [@bs.send] external getIdToken : t => Js.Promise.t(Js.nullable(string)) = "";
+    [@bs.send]
+    external getIdToken : t => Js.Promise.t(Js.nullable(string)) = "";
   };
   module Error = {
     type t;
@@ -142,24 +170,24 @@ module Auth = {
   };
   module UserCredential = {
     type t;
-    [@bs.get] external user: t => Js.nullable(User.t) = "user";
-    [@bs.get] external credential: t => Js.nullable(AuthCredential.t) = "credential";
-    [@bs.get] external operationType: t => Js.nullable(string) = "operationType";
-    [@bs.get] external additionalUserInfo: t => Js.nullable(AdditionalUserInfo.t) = "additionalUserInfo";
+    [@bs.get] external user : t => Js.nullable(User.t) = "user";
+    [@bs.get]
+    external credential : t => Js.nullable(AuthCredential.t) = "credential";
+    [@bs.get]
+    external operationType : t => Js.nullable(string) = "operationType";
+    [@bs.get]
+    external additionalUserInfo : t => Js.nullable(AdditionalUserInfo.t) =
+      "additionalUserInfo";
   };
   [@bs.get] external currentUser : t => Js.null(User.t) = "currentUser";
   [@bs.send]
-    external createUserAndRetrieveDataWithEmailAndPassword: (
-    t,
-    ~email:string,
-    ~password:string
-  ) => Js.Promise.t(UserCredential.t) = "createUserWithEmailAndPassword";
+  external createUserAndRetrieveDataWithEmailAndPassword :
+    (t, ~email: string, ~password: string) => Js.Promise.t(UserCredential.t) =
+    "createUserWithEmailAndPassword";
   [@bs.send]
-    external signInAndRetrieveDataWithEmailAndPassword: (
-    t,
-    ~email:string,
-    ~password:string
-  ) => Js.Promise.t(UserCredential.t) = "signInAndRetrieveDataWithEmailAndPassword";
+  external signInAndRetrieveDataWithEmailAndPassword :
+    (t, ~email: string, ~password: string) => Js.Promise.t(UserCredential.t) =
+    "signInAndRetrieveDataWithEmailAndPassword";
   [@bs.send]
   external onAuthStateChanged :
     (
@@ -170,11 +198,15 @@ module Auth = {
     ) =>
     unit =
     "onAuthStateChanged";
-  [@bs.send] external signInAnonymously : (t, unit) => Js.Promise.t(User.t) = "signInAnonymously";
   [@bs.send]
-  external signInWithCredential : (t, ~credential: AuthCredential.t) => Js.Promise.t(User.t) =
+  external signInAnonymously : (t, unit) => Js.Promise.t(User.t) =
+    "signInAnonymously";
+  [@bs.send]
+  external signInWithCredential :
+    (t, ~credential: AuthCredential.t) => Js.Promise.t(User.t) =
     "signInWithCredential";
-  [@bs.send] external signInWithCustomToken : (t, ~token: string) => Js.Promise.t(User.t) =
+  [@bs.send]
+  external signInWithCustomToken : (t, ~token: string) => Js.Promise.t(User.t) =
     "signInWithCustomToken";
   [@bs.send] external signOut : t => Js.Promise.t(unit) = "signOut";
 };
@@ -183,6 +215,7 @@ module App = {
   type t;
   [@bs.send] external auth : t => Auth.t = "";
   [@bs.send] external database : t => Database.t = "";
+  [@bs.send] external firestore : t => Firestore.t = "";
   /*external delete*/
   /*external messaging*/
   [@bs.send] external storage : t => Storage.t = "";
@@ -198,4 +231,6 @@ type options = {
   "messagingSenderId": string
 };
 
-[@bs.module "firebase"] external initializeApp : (~options: options) => App.t = "initializeApp";
+[@bs.module "firebase"]
+external initializeApp : (~options: options) => App.t = "initializeApp";
+
