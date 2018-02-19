@@ -115,20 +115,45 @@ module Database = {
 
 module Firestore = {
   type t;
+  type unsubscribeFunction = unit => unit;
   module DocumentSnapshot = {
     type t;
     [@bs.send] external data : t => Js.Json.t = "";
   };
-  module Query = {
-    type t;
-  };
-  module QuerySnapshot = {
-    type t;
-  };
   module Error = {
     type t;
   };
-  type unsubscribeFunction = unit => unit;
+  module QueryDocumentSnapshot = {
+    type t;
+    [@bs.send] external data : (t) => Js.Json.t = "";
+  };
+  module QuerySnapshot = {
+    type t = {.
+      "docs": Js.Array.t(QueryDocumentSnapshot.t)
+    };
+  };
+  module Query = {
+    type t;
+    [@bs.send] external endAt : (t, 'a) => t = "";
+    [@bs.send] external endBefore : (t, 'a) => t = "";
+    [@bs.send] external get : t => Js.Promise.t(QuerySnapshot.t) = "";
+    [@bs.send] external limit : (t, int) => t = "";
+    [@bs.send]
+    external onSnapshot :
+      (
+        t,
+        {. "includeQueryMetadataChanges": Js.boolean},
+        QuerySnapshot.t => unit,
+        Error.t => unit
+      ) =>
+      unsubscribeFunction =
+      "";
+    [@bs.send]
+    external orderBy : (t, string, ~direction: string=?, unit) => t = "";
+    [@bs.send] external startAfter : (t, 'a) => t = "";
+    [@bs.send] external startAt : (t, 'a) => t = "";
+    [@bs.send] external where : (t, string, string, 'a) => t = "";
+  };
   module DocumentReference = {
     type t;
     type setOptions = {. "merge": bool};
@@ -138,7 +163,7 @@ module Firestore = {
     external onSnapshot :
       (
         t,
-        {. "includeMetadataChanges": Js.boolean},
+        {. "includeQueryMetadataChanges": Js.boolean},
         DocumentSnapshot.t => unit,
         Error.t => unit
       ) =>
@@ -162,7 +187,7 @@ module Firestore = {
     external onSnapshot :
       (
         t,
-        {. "includeMetadataChanges": Js.boolean},
+        {. "includeQueryMetadataChanges": Js.boolean},
         QuerySnapshot.t => unit,
         Error.t => unit
       ) =>
