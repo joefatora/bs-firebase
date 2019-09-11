@@ -1,6 +1,6 @@
 {
   "name": "bs-firebase",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "clean": "bsb -clean-world",
     "build": "bsb -make-world -clean-world",
@@ -14,9 +14,9 @@
     "bs-platform": "^2.1.0"
   },
   "dependencies": {
-    "firebase": "^4.9.0",
+    "firebase": "^6.6.0",
     "global": "^4.3.2"
   },
-  "repository": "git@github.com:viskahq/bs-firebase.git",
-  "author": ""
+  "repository": "git@github.com:jfatora/bs-firebase.git",
+  "author": "joe fatora"
 }
